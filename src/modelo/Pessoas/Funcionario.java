@@ -1,3 +1,7 @@
+package modelo.Pessoas;
+
+import modelo.Endereco;
+
 
 public class Funcionario extends Pessoa {
     

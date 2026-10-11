@@ -1,3 +1,6 @@
+package modelo.Pessoas;
+
+import modelo.Endereco;
 
 // Superclasse Abstrata
 public abstract class Pessoa {

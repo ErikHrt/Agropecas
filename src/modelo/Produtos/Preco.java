@@ -1,3 +1,5 @@
+package modelo.Produtos;
+
 public class Preco {
 
     private final double valorUnitario;
@@ -11,6 +13,8 @@ public class Preco {
     public void setMargemLucro(double margemLucro) { this.margemLucro = margemLucro; }
 
     public double getValorUnitario() { return valorUnitario; }
+    public double getMargemLucro() { return margemLucro; }
 
-    public double getValordeVenda(){ return valorUnitario * (1 + margemLucro); }
+    public double getValordeVenda(){ return (valorUnitario * (1 + margemLucro)); }
+
 }

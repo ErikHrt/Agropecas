@@ -1,3 +1,5 @@
+package modelo.Operacoes;
+
 public class Compra implements Operacao {
     
     private int idCompra;

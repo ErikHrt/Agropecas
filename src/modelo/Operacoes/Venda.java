@@ -1,5 +1,11 @@
+package modelo.Operacoes;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import modelo.Pessoas.Cliente;
+import modelo.Pessoas.Funcionario;
+import modelo.Produtos.Produto;
 
 public class Venda implements Operacao {
 
@@ -20,6 +26,20 @@ public class Venda implements Operacao {
         this.dataVenda = LocalDate.now();
         this.produtosVendidos = new ArrayList<>();
     }
+    
+    public void adicionarProduto(Produto produto) {
+        produtosVendidos.add(produto);
+    }
+
+    public double calcularTotalVenda() {
+        double total = 0.0;
+        for (Produto produto : produtosVendidos) {
+            total += produto.getPreco();
+        }
+        this.totalVenda = total;
+        return total;
+    }
+
 
     @Override
     public void cadastrar() {
@@ -41,22 +61,6 @@ public class Venda implements Operacao {
     public void consultar() {
         // Implementar lógica de consulta da venda
     }
-
-
-    public void adicionarProduto(Produto produto) {
-        produtosVendidos.add(produto);
-    }
-
-    public double calcularTotalVenda() {
-        double total = 0.0;
-        for (Produto produto : produtosVendidos) {
-            total += produto.getPreco();
-        }
-        this.totalVenda = total;
-        return total;
-    }
-
-
 
     
 }

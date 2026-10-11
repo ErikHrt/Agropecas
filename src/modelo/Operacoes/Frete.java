@@ -1,16 +1,25 @@
+package modelo.Operacoes;
+
+import modelo.Endereco;
+import modelo.Pessoas.*;
+
 public class Frete implements Operacao {
 
-    private int idFrete;
-    private String transportadora;
+    private final int idFrete;
     private double valorFrete;
+    private Funcionario funcionario;
     private java.time.LocalDate dataEntrega;
     private Venda vendaAssociada;
     private Endereco enderecoEntrega;
+    private enum StatusFrete {
+        PENDENTE,
+        EM_TRANSITO,
+        ENTREGUE
+    }
 
-    public Frete(int idFrete, String transportadora, double valorFrete, java.time.LocalDate dataEntrega, 
+    public Frete(int idFrete, double valorFrete, java.time.LocalDate dataEntrega, 
     Venda vendaAssociada, Endereco enderecoEntrega) {
         this.idFrete = idFrete;
-        this.transportadora = transportadora;
         this.valorFrete = valorFrete;
         this.dataEntrega = dataEntrega;
         this.vendaAssociada = vendaAssociada;

@@ -1,3 +1,5 @@
+package modelo.Operacoes;
+
 interface Operacao {
 
     public void cadastrar();

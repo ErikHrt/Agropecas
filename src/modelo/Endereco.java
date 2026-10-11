@@ -1,3 +1,5 @@
+package modelo;
+
 public class Endereco {
     private final String rua;
     private final String numero;

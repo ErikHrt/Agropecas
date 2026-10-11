@@ -1,9 +1,11 @@
 package modelo.Pessoas;
+
 import java.util.ArrayList;
+import modelo.Endereco;
 
 public class Cliente extends Pessoa {
 
-    private final ArrayList<Double> idsCompras;
+    private final ArrayList<Integer> idsCompras;
     private double saldoDevedor;
     
     public Cliente(String nome, String cpf, String telefone, Endereco endereco) {
@@ -20,18 +22,18 @@ public class Cliente extends Pessoa {
     }
 
     public void adicionarCompra(int idVenda) {
-        idsCompras.add((double) idVenda);
+        idsCompras.add(idVenda);
     }
 
-    public ArrayList<Double> getIdsCompras() {
+    public ArrayList<Integer> getIdsCompras() {
         return idsCompras;
     }
 
-    @Override
+    @Override 
     public String getPerfil() {
         return super.getPerfil() +
                "\nSaldo Devedor: R$" + saldoDevedor +
-               "\nCompras Realizadas (IDs): " + idsCompras.toString();
+               "\nCompras Realizadas (IDs): " + idsCompras.toString() + "\n";
     }
 
 }
