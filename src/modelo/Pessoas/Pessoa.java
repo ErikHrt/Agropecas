@@ -17,17 +17,15 @@ public abstract class Pessoa {
         this.endereco = endereco;
     }
 
-    // Getters e setters padronizados
     public String getNome() { return nome; }
     public String getCpf() { return cpf; }
     public String getContato() { return contato; }
     public Endereco getEndereco() { return endereco; }
-    
+
     public String getPerfil() {
-        return "Nome: " + nome + 
-               "\nCPF: " + cpf + 
-               "\nTelefone: " + contato + 
+        return "Nome: " + nome +
+               "\nCPF: " + cpf +
+               "\nTelefone: " + contato +
                "\nEndereço: " + endereco.getEnderecoCompleto();
     }
 }
-

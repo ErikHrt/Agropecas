@@ -1,0 +1,3 @@
+PECA;1;Peça de teste;Descrição da peça de teste;100.0;0.2;10.0;0.5;0.5;0.5;3004
+PECA;2;Peça de teste;Descrição da peça de teste 2;1000.0;0.45;10.0;0.5;0.5;0.5;70
+PECA;50;Nao sei;negocio bem diferente;124.0;0.8;1000.0;12.0;2.0;1.0;148

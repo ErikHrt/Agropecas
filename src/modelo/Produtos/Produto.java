@@ -7,7 +7,7 @@ public abstract class Produto {
     private String descricao;
     private Preco preco;
     private final EspecificacaoFisica especificacaoFisica;
-    private double quantidadeEstoque;
+    private int quantidadeEstoque;
 
     protected Produto(int id, String nome, String descricao, Preco preco,
                       EspecificacaoFisica especificacaoFisica) {
@@ -26,11 +26,11 @@ public abstract class Produto {
     public String getDescricao() { return descricao; }
     public Preco getPreco() { return preco; }
     public EspecificacaoFisica getEspecificacaoFisica() { return especificacaoFisica; }
-    public double getQuantidadeEstoque() { return quantidadeEstoque; }
+    public int getQuantidadeEstoque() { return quantidadeEstoque; }
 
     public void setDescricao(String descricao) { this.descricao = descricao; }
     public void setPreco(Preco preco) { this.preco = preco; }
-    public void setQuantidadeEstoque(double quantidadeEstoque) { this.quantidadeEstoque = quantidadeEstoque; }
+    public void setQuantidadeEstoque(int quantidadeEstoque) { this.quantidadeEstoque = quantidadeEstoque; }
 
     public String getTodaDescricao() {
         return "Tipo: " + getTipo() +

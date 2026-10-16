@@ -2,19 +2,20 @@ package modelo.Pessoas;
 
 import modelo.Endereco;
 
-
 public class Funcionario extends Pessoa {
     
     private final double salarioBase;
-    private double taxaComissao; // Ex: 0.05 para 5%
-    private double totalVendasNoMes; // Para calcular a comissão
+    private String Cargo;
+    private double taxaComissao;
+    private double totalVendasNoMes;
 
     public Funcionario(String nome, String cpf, String telefone, Endereco endereco, 
-                       String matricula, double salarioBase, double taxaComissao) {
-        // O "super" chama o construtor da classe pai (Pessoa)
+                       String cargo, double salarioBase, double taxaComissao) {
+
         super(nome, cpf, telefone, endereco);
         this.salarioBase = salarioBase;
         this.taxaComissao = taxaComissao;
+        this.Cargo = cargo;
     }
 
     // Getters e setters para totalVendasNoMes
@@ -25,7 +26,11 @@ public class Funcionario extends Pessoa {
     public double getSalarioBase() {
         return salarioBase;
     }
-    
+
+    public String getCargo() {
+        return Cargo;
+    }
+
     public double getTaxaComissao() {
         return taxaComissao;
     }
@@ -38,7 +43,10 @@ public class Funcionario extends Pessoa {
         this.totalVendasNoMes = totalVendasNoMes;
     }
 
-    // Método específico de funcionário
+    public void setCargo(String cargo) {
+        Cargo = cargo;
+    }
+    
     public double calcularSalarioComComissao(double totalVendidoNoMes) {
         return salarioBase + (totalVendidoNoMes * taxaComissao);
     }
