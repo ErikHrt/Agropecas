@@ -17,6 +17,7 @@ public abstract class Pessoa {
         this.endereco = endereco;
     }
 
+    // Getters e Setters
     public String getNome() { return nome; }
     public String getCpf() { return cpf; }
     public String getContato() { return contato; }

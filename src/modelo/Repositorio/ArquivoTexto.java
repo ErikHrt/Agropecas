@@ -3,6 +3,7 @@ package modelo.Repositorio;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -44,21 +45,27 @@ public abstract class ArquivoTexto<T, K> implements Repositorio<T, K> {
 
     @Override
     public void salvar(T item) throws IOException, CodigoDuplicadoException {
+        
         K chave = getChave(item);
         if (existe(chave)) {
             throw new CodigoDuplicadoException(nomeEntidade() + " já cadastrado: " + chave);
         }
+
         criarPastaSeNecessario();
+        
         try (BufferedWriter escritor = Files.newBufferedWriter(caminho,
-                StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+                StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
             escritor.write(formatar(item));
             escritor.newLine();
         }
+
     }
 
     @Override
     public T buscarPorChave(K chave) throws IOException, ItemNaoEncontradoException {
+        
         for (T item : listarTodos()) {
+            
             if (getChave(item).equals(chave)) {
                 return item;
             }
@@ -74,7 +81,7 @@ public abstract class ArquivoTexto<T, K> implements Repositorio<T, K> {
             return itens; // nada cadastrado ainda
         }
 
-        try (BufferedReader leitor = Files.newBufferedReader(caminho)) {
+        try (BufferedReader leitor = Files.newBufferedReader(caminho,StandardCharsets.UTF_8)) {
             String linha;
             int numeroLinha = 0;
             while ((linha = leitor.readLine()) != null) {
@@ -90,21 +97,29 @@ public abstract class ArquivoTexto<T, K> implements Repositorio<T, K> {
 
     @Override
     public void atualizar(T item) throws IOException, ItemNaoEncontradoException {
+        
         List<T> itens = listarTodos();
+        
         K chave = getChave(item);
+        
         for (int i = 0; i < itens.size(); i++) {
+
             if (getChave(itens.get(i)).equals(chave)) {
+                
                 itens.set(i, item);
                 regravar(itens);
                 return;
             }
         }
+        
         throw naoEncontrado(chave);
     }
 
     @Override
     public void remover(K chave) throws IOException, ItemNaoEncontradoException {
+        
         List<T> itens = listarTodos();
+        
         boolean removido = itens.removeIf(item -> getChave(item).equals(chave));
         if (!removido) {
             throw naoEncontrado(chave);
@@ -123,29 +138,37 @@ public abstract class ArquivoTexto<T, K> implements Repositorio<T, K> {
         return false;
     }
 
-    /** Monta a exceção padrão para linha inválida; use dentro de converter(). */
+    // Monta a exceção padrão para linha inválida; use dentro de converter(). 
     protected IOException linhaInvalida(int numeroLinha, String detalhe, Throwable causa) {
+        
         return new IOException(nomeEntidade() + ": linha " + numeroLinha + " inválida ("
                 + detalhe + ") em " + caminho, causa);
     }
 
     private void criarPastaSeNecessario() throws IOException {
+       
         Path pasta = caminho.toAbsolutePath().getParent();
+        
         if (pasta != null) {
             Files.createDirectories(pasta);
         }
     }
 
-    /** Grava num arquivo temporário e só então substitui o original, para não corrompê-lo. */
+    // Grava num arquivo temporário e só então substitui o original, para não corrompê-lo
     private void regravar(List<T> itens) throws IOException {
+
         criarPastaSeNecessario();
+        
         Path temporario = Paths.get(caminho + ".tmp");
-        try (BufferedWriter escritor = Files.newBufferedWriter(temporario)) {
+        
+        try (BufferedWriter escritor = Files.newBufferedWriter(temporario,StandardCharsets.UTF_8)) {
+            
             for (T item : itens) {
                 escritor.write(formatar(item));
                 escritor.newLine();
             }
         }
+        
         Files.move(temporario, caminho, StandardCopyOption.REPLACE_EXISTING);
     }
 }

@@ -15,9 +15,9 @@ public class ArquivoCompra extends ArquivoTexto<Compra, Integer> {
         private static final String SEPARADOR_ITENS = "|";
         private static final String SEPARADOR_CAMPOS_ITEM = ":";
         
-        private final Repositorio<Funcionario, String> funcionarios;
+        private final ArquivoFuncionario funcionarios;
 
-        public ArquivoCompra(String caminho, Repositorio<Funcionario, String> funcionarios){
+        public ArquivoCompra(String caminho, ArquivoFuncionario funcionarios){
             super(caminho);
              this.funcionarios = funcionarios;
         }

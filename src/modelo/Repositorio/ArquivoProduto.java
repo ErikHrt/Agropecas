@@ -82,7 +82,6 @@ public class ArquivoProduto extends ArquivoTexto<Produto , Integer> {
 
     // ---- Consultas específicas de produto ----
 
-
     public Produto buscarPorNome(String nome) throws IOException, ProdutoNaoEncontradoException {
         for (Produto produto : listarTodos()) {
             if (produto.getNome().equalsIgnoreCase(nome)) {
@@ -93,7 +92,9 @@ public class ArquivoProduto extends ArquivoTexto<Produto , Integer> {
     }
 
     public List<Produto> listarPorTipo(String tipo) throws IOException {
+        
         List<Produto> resultado = new ArrayList<>();
+        
         for (Produto produto : listarTodos()) {
             if (produto.getTipo().equals(tipo)) {
                 resultado.add(produto);

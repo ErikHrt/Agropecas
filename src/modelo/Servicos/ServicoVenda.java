@@ -11,19 +11,18 @@ import modelo.Operacoes.ItemOps;
 import modelo.Operacoes.Venda;
 import modelo.Pessoas.Funcionario;
 import modelo.Produtos.Produto;
+import modelo.Repositorio.ArquivoFuncionario;
+import modelo.Repositorio.ArquivoProduto;
 import modelo.Repositorio.ArquivoVenda;
-import modelo.Repositorio.Repositorio;
 
-/** Regras de negócio que envolvem vários repositórios ao mesmo tempo. */
+// Execução da VENDA que envolve vários arquivos ao mesmo tempo.
 public class ServicoVenda {
 
-    private final Repositorio<Produto, Integer> produtos;
-    private final Repositorio<Funcionario, String> funcionarios;
+    private final ArquivoProduto produtos;
+    private final ArquivoFuncionario funcionarios;
     private final ArquivoVenda vendas;
 
-    public ServicoVenda(Repositorio<Produto, Integer> produtos,
-                        Repositorio<Funcionario, String> funcionarios,
-                        ArquivoVenda vendas) {
+    public ServicoVenda(ArquivoProduto produtos, ArquivoFuncionario funcionarios, ArquivoVenda vendas) {
         this.produtos = produtos;
         this.funcionarios = funcionarios;
         this.vendas = vendas;
@@ -35,7 +34,9 @@ public class ServicoVenda {
         if (venda.getCarrinho().isEmpty()) {
             throw new IllegalStateException("A venda não tem itens");
         }
+
         String metodo = venda.getMetodoPagamento();
+        
         if (metodo == null || metodo.isBlank()) {
             throw new IllegalStateException("Método de pagamento não informado");
         }
@@ -45,11 +46,14 @@ public class ServicoVenda {
         Map<Integer, Produto> envolvidos = new HashMap<>();
         
         for (ItemOps item : venda.getCarrinho()) {
+            
             Produto p = produtos.buscarPorChave(item.getIdProduto());
+            
             if (p.getQuantidadeEstoque() < item.getQtd()) {
                 throw new EstoqueInsuficienteException("Estoque insuficiente de " + p.getNome()
                         + ": disponível " + p.getQuantidadeEstoque() + ", pedido " + item.getQtd());
             }
+            
             envolvidos.put(p.getId(), p);
         }
 

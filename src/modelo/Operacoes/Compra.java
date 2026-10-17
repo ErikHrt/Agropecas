@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import modelo.Pessoas.Funcionario;
 
-
+// Subclasse
 public class Compra extends  Operacao {
     
     private final List<ItemOps> itensComprados;
@@ -25,10 +25,31 @@ public class Compra extends  Operacao {
         this.itensComprados = new ArrayList<>(itensComprados);
     }
 
-    public List<ItemOps> getItensComprados(){
-        return Collections.unmodifiableList(itensComprados);
+    // Getters e Setters
+    public List<ItemOps> getItensComprados(){ return Collections.unmodifiableList(itensComprados);}
+
+    // Overrides
+
+    @Override
+    public double getValor() {
+        return calcularTotal();
     }
 
+    @Override 
+    public String toString(){
+
+        String itens = new String();
+
+        for (ItemOps item : itensComprados) {
+            itens = itens + (item.toString()) + "\n";
+            
+        }
+        
+        return "\nCompra \n" + super.toString() +
+                "Itens Comprados: \n" + itens;    
+    }
+
+    // ------ Métodos específicos para a operação COMPRA -----------
     public void adicionarItemNosComprados(ItemOps item) {
         if (item.getQtd() <= 0) {
             throw new IllegalArgumentException("Quantidade deve ser positiva");
@@ -66,11 +87,6 @@ public class Compra extends  Operacao {
             total += item.getQtd() * item.getValorUn();
         }
         return total;
-    }
-
-    @Override
-    public double getValor() {
-        return calcularTotal();
     }
  
 }

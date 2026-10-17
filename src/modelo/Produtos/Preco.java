@@ -9,12 +9,12 @@ public class Preco {
         this.valorUnitario = valorUnitario;
         this.margemLucro = margemLucro;
     }
-
-    public void setMargemLucro(double margemLucro) { this.margemLucro = margemLucro; }
+    
+    // Getters e Setters
 
     public double getValorUnitario() { return valorUnitario; }
     public double getMargemLucro() { return margemLucro; }
-
     public double getValordeVenda(){ return (valorUnitario * (1 + margemLucro)); }
 
+    public void setMargemLucro(double margemLucro) { this.margemLucro = margemLucro; }
 }

@@ -5,24 +5,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import modelo.Excecoes.EstoqueInsuficienteException;
+import modelo.Excecoes.ValorInvalidoException;
 import modelo.Pessoas.Cliente;
 import modelo.Pessoas.Funcionario;
 import modelo.Produtos.Produto;
 
+// Subclasse
 public class Venda extends Operacao {
 
     private final Cliente cliente;
     private String metodoPagamento;
     private final List<ItemOps> carrinho;
 
-    /** Venda nova (id definido ao salvar). */
+    /// Venda nova (id definido ao salvar)
     public Venda(Cliente cliente, Funcionario funcionario) {
         super(funcionario);
         this.cliente = cliente;
         this.carrinho = new ArrayList<>();
     }
 
-    /** Venda carregada do arquivo: não revalida estoque, pois já foi vendida. */
+    // Venda carregada do arquivo
     public Venda(int id, Cliente cliente, Funcionario funcionario, LocalDate data,
                  String metodoPagamento, List<ItemOps> itens) {
         super(id, funcionario, data);
@@ -31,26 +33,44 @@ public class Venda extends Operacao {
         this.carrinho = new ArrayList<>(itens);
     }
 
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public String getMetodoPagamento() {
-        return metodoPagamento;
-    }
-
-    public void setMetodoPagamento(String metodoPagamento) {
-        this.metodoPagamento = metodoPagamento;
-    }
-
+    // Getters e Setters
+    public Cliente getCliente() {return cliente;}
+    public String getMetodoPagamento() { return metodoPagamento; }
+    
     // Retorna uma visão protegida contra alterações externas
-    public List<ItemOps> getCarrinho() {
-        return Collections.unmodifiableList(carrinho);
+    public List<ItemOps> getCarrinho() { return Collections.unmodifiableList(carrinho); }
+
+    public void setMetodoPagamento(String metodoPagamento) { this.metodoPagamento = metodoPagamento; }
+
+    // Overrides
+
+    @Override
+    public double getValor() {
+        return calcularTotal();
     }
 
-    public void adicionarAoCarrinho(Produto p, int qtd) throws EstoqueInsuficienteException {
+    @Override
+    public String toString(){
+
+        String itens = new String();
+
+        for (ItemOps item : carrinho) {
+            itens = itens + (item.toString()) + "\n";
+            
+        }
+        
+        return "\nVenda \n" + super.toString() +
+                "Cliente : " + cliente.getNome() + " | " + cliente.getCpf() + "\n" +
+                "Método de Pagamento : " + metodoPagamento + "\n" +
+                "Itens Vendidos: \n" + itens;         
+    }
+
+    // ------ Métodos específicos para a Operação VENDA -----------
+
+    public void adicionarAoCarrinho(Produto p, int qtd) throws EstoqueInsuficienteException, ValorInvalidoException {
+        
         if (qtd <= 0) {
-            throw new IllegalArgumentException("Quantidade deve ser positiva");
+            throw new ValorInvalidoException("Quantidade deve ser positiva");
         }
 
         // Verifica se o Produto já se encontra no carrinho
@@ -90,28 +110,5 @@ public class Venda extends Operacao {
         }
         return null;
     }
-
-    @Override
-    public double getValor() {
-        return calcularTotal();
-    }
-
-    @Override
-    public String toString(){
-
-        String itens = new String();
-
-        for (ItemOps item : carrinho) {
-            itens = itens + (item.toString()) + "\n";
-            
-        }
-
-        return "\nVenda \n" + super.toString() +
-                "Cliente : " + cliente.getNome() + " | " + cliente.getCpf() + "\n" +
-                "Método de Pagamento : " + metodoPagamento + "\n" +
-                "Itens Vendidos: \n" + itens; 
-        
-    }
-
     
 }

@@ -13,22 +13,11 @@ public class Endereco {
         this.estado = estado;
     }
 
-    public String getRua(){
-        return rua;
-    }
-
-    public String getNumero(){
-        return numero;
-    }
-
-    public String getCidade(){
-        return cidade;
-    }
-
-    public String getEstado(){
-        return estado;
-    }
-
+    // Getters
+    public String getRua(){ return rua; }
+    public String getNumero(){ return numero; }
+    public String getCidade(){ return cidade; }
+    public String getEstado(){ return estado; }
     public String getEnderecoCompleto() {
         return rua + ", " + numero + " - " + cidade + "/" + estado;
     }

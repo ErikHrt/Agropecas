@@ -13,12 +13,15 @@ public class EspecificacaoFisica {
         this.profundidadeMetros = profundidadeMetros;
     }
 
+    // Getters e Setters
+
     public double getPesoKg() { return pesoKg; }
     public double getAlturaMetros() { return alturaMetros; }
     public double getLarguraMetros() { return larguraMetros; }
     public double getProfundidadeMetros() { return profundidadeMetros; }
 
-
+    // Métodos
+    
     public double calcularVolumeMetrosCubicos() {
         return alturaMetros * larguraMetros * profundidadeMetros;
     }

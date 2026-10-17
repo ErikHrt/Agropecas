@@ -6,6 +6,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.Excecoes.ItemNaoEncontradoException;
+import modelo.Excecoes.PessoaNaoEncontradaException;
 import modelo.Operacoes.ItemOps;
 import modelo.Operacoes.Venda;
 import modelo.Pessoas.Cliente;
@@ -22,16 +23,17 @@ public class ArquivoVenda extends ArquivoTexto<Venda, Integer> {
     private static final String SEPARADOR_ITENS = "|";
     private static final String SEPARADOR_CAMPOS_ITEM = ":";
 
-    private final Repositorio<Cliente, String> clientes;
-    private final Repositorio<Funcionario, String> funcionarios;
+    private final ArquivoCliente clientes;
+    private final ArquivoFuncionario funcionarios;
 
-    public ArquivoVenda(String caminho, Repositorio<Cliente, String> clientes,
-                        Repositorio<Funcionario, String> funcionarios) {
+    public ArquivoVenda(String caminho, ArquivoCliente clientes,
+                        ArquivoFuncionario funcionarios) {
         super(caminho);
         this.clientes = clientes;
         this.funcionarios = funcionarios;
     }
 
+    // Overrides 
     @Override
     protected Integer getChave(Venda venda) {
         return venda.getId();
@@ -49,6 +51,7 @@ public class ArquivoVenda extends ArquivoTexto<Venda, Integer> {
 
     @Override
     protected String formatar(Venda venda) {
+        
         List<String> itens = new ArrayList<>();
         for (ItemOps item : venda.getCarrinho()) {
             itens.add(item.getIdProduto() + SEPARADOR_CAMPOS_ITEM
@@ -67,12 +70,15 @@ public class ArquivoVenda extends ArquivoTexto<Venda, Integer> {
 
     @Override
     protected Venda converter(String linha, int numeroLinha) throws IOException {
+        
         String[] d = linha.split(SEPARADOR, -1);
+        
         if (d.length != NUMERO_CAMPOS) {
             throw linhaInvalida(numeroLinha, "esperados " + NUMERO_CAMPOS + " campos", null);
         }
 
         try {
+            
             int id = Integer.parseInt(d[0]);
             Funcionario funcionario = funcionarios.buscarPorChave(d[1]);
             Cliente cliente = clientes.buscarPorChave(d[2]);
@@ -80,12 +86,17 @@ public class ArquivoVenda extends ArquivoTexto<Venda, Integer> {
             String metodoPagamento = d[4];
 
             List<ItemOps> itens = new ArrayList<>();
+            
             if (!d[5].isEmpty()) {
+               
                 for (String texto : d[5].split("\\" + SEPARADOR_ITENS)) {
+                    
                     String[] campos = texto.split(SEPARADOR_CAMPOS_ITEM, -1);
+                    
                     if (campos.length != 3) {
                         throw linhaInvalida(numeroLinha, "item malformado '" + texto + "'", null);
                     }
+                    
                     itens.add(new ItemOps(Integer.parseInt(campos[0]),
                             Integer.parseInt(campos[1]),
                             Double.parseDouble(campos[2])));
@@ -103,7 +114,7 @@ public class ArquivoVenda extends ArquivoTexto<Venda, Integer> {
         }
     }
 
-    /** Próximo id sequencial (maior id existente + 1). */
+    // Próximo id sequencial (maior id existente + 1)
     public int proximoId() throws IOException {
         int maior = 0;
         for (Venda venda : listarTodos()) {
@@ -112,5 +123,53 @@ public class ArquivoVenda extends ArquivoTexto<Venda, Integer> {
             }
         }
         return maior + 1;
+    }
+
+    // Consultas específicas de Vendas
+
+    public List<Venda> buscarVendaPorCliente(Cliente cliente) 
+                throws PessoaNaoEncontradaException , IOException {
+        
+        if (cliente == null) {
+            throw new PessoaNaoEncontradaException("Cliente inválido ou nulo para a busca de vendas.");
+        }
+
+        List<Venda> vendasDoCliente = new ArrayList<>();
+
+        for (Venda venda : listarTodos()) {
+
+            if (venda.getCliente() != null && venda.getCliente().getCpf().equals(cliente.getCpf())) {
+                vendasDoCliente.add(venda);
+            }
+        }
+
+        if( vendasDoCliente.isEmpty() ){
+            throw new PessoaNaoEncontradaException("Cliente não encontrado");
+        }
+
+        return vendasDoCliente;
+    }
+
+    public List<Venda> buscarVendaPorFuncionario(Funcionario funcionario) 
+                        throws PessoaNaoEncontradaException , IOException  {
+        
+        if (funcionario == null) {
+            throw new PessoaNaoEncontradaException("Funcionário inválido ou nulo para a busca de vendas.");
+        }
+
+        List<Venda> vendasDoFuncionario = new ArrayList<>();
+
+        for (Venda venda : listarTodos()) {
+            
+            if (venda.getFuncionario() != null && venda.getFuncionario().getCpf().equals(funcionario.getCpf())) {
+                vendasDoFuncionario.add(venda);
+            }
+        }
+
+        if( vendasDoFuncionario.isEmpty() ){
+            throw new PessoaNaoEncontradaException("Cliente não encontrado");
+        }
+
+        return vendasDoFuncionario;
     }
 }

@@ -19,8 +19,7 @@ public abstract class Produto {
         this.quantidadeEstoque = 0;
     }
 
-    public abstract String getTipo();
-
+    // Getters e Setters
     public int getId() { return id; }
     public String getNome() { return nome; }
     public String getDescricao() { return descricao; }
@@ -42,5 +41,7 @@ public abstract class Produto {
                "\nVolume: " + especificacaoFisica.calcularVolumeMetrosCubicos() + " m³" +
                "\nQuantidade em estoque: " + quantidadeEstoque;
     }
-
+    
+    // O tipo do produto será colocado na primeira posição das infos do produto no ArquivoProduto
+    public abstract String getTipo();
 }
