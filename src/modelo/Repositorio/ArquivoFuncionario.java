@@ -2,6 +2,7 @@ package modelo.Repositorio;
 
 import java.io.IOException;
 import modelo.Endereco;
+import modelo.Excecoes.ItemNaoEncontradoException;
 import modelo.Pessoas.*;
 
 public class ArquivoFuncionario extends ArquivoTexto<Funcionario,String>{
@@ -64,6 +65,10 @@ public class ArquivoFuncionario extends ArquivoTexto<Funcionario,String>{
         }
     }
 
+    @Override
+    protected ItemNaoEncontradoException naoEncontrado(String cpf) {
+            return new ItemNaoEncontradoException("Funcionário não encontrado com o CPF: " + cpf);
+    }
 
     
 }

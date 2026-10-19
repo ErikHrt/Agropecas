@@ -57,6 +57,11 @@ public class ArquivoCliente extends ArquivoTexto<Cliente, String> {
         }
     }
     
+    @Override
+    protected ItemNaoEncontradoException naoEncontrado(String cpf) {
+            return new ItemNaoEncontradoException("Cliente não encontrado com o CPF: " + cpf);
+    }
+
     // ---- Consultas específicas de cliente ----
 
     public Cliente buscarPorNome(String nome) throws IOException, PessoaNaoEncontradaException {

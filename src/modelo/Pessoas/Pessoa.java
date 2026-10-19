@@ -5,10 +5,10 @@ import modelo.Endereco;
 // Superclasse Abstrata
 public abstract class Pessoa {
 
-    private final String nome;
-    private final String cpf;
-    private final String contato;
-    private final Endereco endereco;
+    protected final String nome;
+    protected final String cpf;
+    protected String contato;
+    protected Endereco endereco;
 
     public Pessoa(String nome, String cpf, String contato, Endereco endereco) {
         this.nome = nome;
@@ -22,6 +22,9 @@ public abstract class Pessoa {
     public String getCpf() { return cpf; }
     public String getContato() { return contato; }
     public Endereco getEndereco() { return endereco; }
+
+    public void setContato( String contato){ this.contato = contato; }
+    public void setEndereco(Endereco endereco ){this.endereco = endereco;}
 
     public String getPerfil() {
         return "Nome: " + nome +

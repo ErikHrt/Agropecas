@@ -167,7 +167,7 @@ public class ArquivoVenda extends ArquivoTexto<Venda, Integer> {
         }
 
         if( vendasDoFuncionario.isEmpty() ){
-            throw new PessoaNaoEncontradaException("Cliente não encontrado");
+            throw new PessoaNaoEncontradaException("Funcionário não encontrado");
         }
 
         return vendasDoFuncionario;

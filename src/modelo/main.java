@@ -184,13 +184,14 @@ public class main
         
         ItemOps item1 = new ItemOps(1,10,1000);
         item1.setLocalDaCompra("LOCAL 1");
+        
         ItemOps item2 = new ItemOps(1010, 5, 1000);
         item2.setLocalDaCompra("Local 2");
         
         compra1.adicionarItemNosComprados(item1);
         compra1.adicionarItemNosComprados(item2);
 
-        System.out.print("\n VALOR DA COMPRA" + compra1.getValor() + "\n");
+        System.out.print("\n VALOR DA COMPRA: " + compra1.getValor() + "\n");
 
         ServicoCompra CompraCompleta = new ServicoCompra(produtos, compras);
 

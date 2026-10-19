@@ -13,68 +13,72 @@ import modelo.Produtos.Produto;
 
 public class CadastroProdutos {
 
+    private static final Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
+
     public static Function<ItemOps, Produto> criador = item -> {
-        
-        try (Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8)) {
-            
-            System.out.println("\n=== CADASTRO DE PRODUTO (ID = " + item.getIdProduto() + ") ===\n");
-            System.out.println("1 - Maquinário");
-            System.out.println("2 - Implemento");
-            System.out.println("3 - Peça");
-            System.out.print("Selecione o tipo de produto: ");
-            int tipo = Integer.parseInt(scanner.nextLine());
 
-            // Se o ItemOps já trouxer o ID da operação, use item.getIdProduto(); caso contrário, solicite:
-            System.out.print("Nome do Produto: ");
-            String nome = scanner.nextLine();
+        int id = item.getIdProduto();
 
-            System.out.print("Descrição do Produto: ");
-            String descricao = scanner.nextLine();
+        System.out.println("\n=== CADASTRO DE PRODUTO (ID = " + id + ") ===\n");
+        System.out.println("1 - Maquinário");
+        System.out.println("2 - Implemento");
+        System.out.println("3 - Peça");
+        int tipo = lerTipo();
 
-            // 1. Composição: Preço
-            System.out.println("\n-- Dados Financeiros --");
-            System.out.print("Preço de Custo/Compra (R$): ");
-            double precoCompra = Double.parseDouble(scanner.nextLine());
+        System.out.print("Nome do Produto: ");
+        String nome = scanner.nextLine();
 
-            System.out.print("Margem de Lucro (ex: 0.30 para 30%): ");
-            double margem = Double.parseDouble(scanner.nextLine());
+        System.out.print("Descrição do Produto: ");
+        String descricao = scanner.nextLine();
 
-            Preco preco = new Preco(precoCompra, margem);
+        // Composição: Preço
+        System.out.println("\n-- Dados Financeiros --");
+        double precoCompra = lerDouble("Preço de Custo/Compra (R$): ");
+        double margem = lerDouble("Margem de Lucro (ex: 0.30 para 30%): ");
+        Preco preco = new Preco(precoCompra, margem);
 
-            // 2. Composição: Especificação Física
-            System.out.println("\n-- Dimensões e Medidas --");
-            System.out.print("Peso (kg): ");
-            double peso = Double.parseDouble(scanner.nextLine());
+        // Composição: Especificação Física
+        System.out.println("\n-- Dimensões e Medidas --");
+        double peso = lerDouble("Peso (kg): ");
+        double altura = lerDouble("Altura (m): ");
+        double largura = lerDouble("Largura (m): ");
+        double profundidade = lerDouble("Profundidade (m): ");
+        EspecificacaoFisica especificacao =
+                new EspecificacaoFisica(peso, altura, largura, profundidade);
 
-            System.out.print("Altura (m): ");
-            double altura = Double.parseDouble(scanner.nextLine());
+        return switch (tipo) {
+            case 1 -> new Maquinario(id, nome, descricao, preco, especificacao);
+            case 2 -> new Implemento(id, nome, descricao, preco, especificacao);
+            default -> new Peca(id, nome, descricao, preco, especificacao); // 3
+        };
+    };
 
-            System.out.print("Largura (m): ");
-            double largura = Double.parseDouble(scanner.nextLine());
+    // ---- Leituras com validação: repetem a pergunta até a entrada ser válida ----
 
-            System.out.print("Profundidade (m): ");
-            double profundidade = Double.parseDouble(scanner.nextLine());
-
-            EspecificacaoFisica especificacao = new EspecificacaoFisica(peso, altura, largura, profundidade);
-
-            // 3. Identificador (ID)
-            // Substitua pelo método getter de ItemOps se existir (ex: item.getIdProduto())
-            int id = item.getIdProduto();
-
-            switch (tipo) {
-                case 1 -> {
-                    return new Maquinario(id, nome, descricao, preco, especificacao);
+    private static int lerTipo() {
+        while (true) {
+            System.out.print("Selecione o tipo de produto (1-3): ");
+            try {
+                int tipo = Integer.parseInt(scanner.nextLine().trim());
+                if (tipo >= 1 && tipo <= 3) {
+                    return tipo;
                 }
-                case 2 -> {
-                    return new Implemento(id, nome, descricao, preco, especificacao);
-                }
-                case 3 -> {
-                    return new Peca(id, nome, descricao, preco, especificacao);
-                }
-                default -> {
-                    throw new IllegalArgumentException("Tipo de produto inválido: " + tipo);
-                }
+            } catch (NumberFormatException e) {
+                // cai na mensagem abaixo
+            }
+            System.out.println("Opção inválida. Digite 1, 2 ou 3.");
+        }
+    }
+
+    private static double lerDouble(String pergunta) {
+        while (true) {
+            System.out.print(pergunta);
+            try {
+                // aceita vírgula decimal (0,30) além de ponto (0.30)
+                return Double.parseDouble(scanner.nextLine().trim().replace(',', '.'));
+            } catch (NumberFormatException e) {
+                System.out.println("Valor inválido. Digite um número.");
             }
         }
-    };
+    }
 }
