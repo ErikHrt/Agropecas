@@ -19,6 +19,13 @@ public abstract class ArquivoTexto<T, K> implements Repositorio<T, K> {
 
     protected static final String SEPARADOR = ";";
 
+    /**
+     * Trava global entre threads. Cada método de ArquivoTexto já é synchronized (protege UM arquivo),
+     * mas operações que mexem em vários arquivos (finalizar venda, backup...) precisam de uma
+     * foto consistente: quem faz isso usa synchronized (ArquivoTexto.TRAVA_GLOBAL) { ... }.
+     */
+    public static final Object TRAVA_GLOBAL = new Object();
+
     private final Path caminho;
 
     protected ArquivoTexto(String caminho) {
@@ -44,7 +51,7 @@ public abstract class ArquivoTexto<T, K> implements Repositorio<T, K> {
     // ---- CRUD ----
 
     @Override
-    public void salvar(T item) throws IOException, CodigoDuplicadoException {
+    public synchronized void salvar(T item) throws IOException, CodigoDuplicadoException {
         
         K chave = getChave(item);
         if (existe(chave)) {
@@ -62,7 +69,7 @@ public abstract class ArquivoTexto<T, K> implements Repositorio<T, K> {
     }
 
     @Override
-    public T buscarPorChave(K chave) throws IOException, ItemNaoEncontradoException {
+    public synchronized T buscarPorChave(K chave) throws IOException, ItemNaoEncontradoException {
         
         for (T item : listarTodos()) {
             
@@ -74,7 +81,7 @@ public abstract class ArquivoTexto<T, K> implements Repositorio<T, K> {
     }
 
     @Override
-    public List<T> listarTodos() throws IOException {
+    public synchronized List<T> listarTodos() throws IOException {
         
         List<T> itens = new ArrayList<>();
         if (!Files.exists(caminho)) {
@@ -96,7 +103,7 @@ public abstract class ArquivoTexto<T, K> implements Repositorio<T, K> {
     }
 
     @Override
-    public void atualizar(T item) throws IOException, ItemNaoEncontradoException {
+    public synchronized void atualizar(T item) throws IOException, ItemNaoEncontradoException {
         
         List<T> itens = listarTodos();
         
@@ -116,7 +123,7 @@ public abstract class ArquivoTexto<T, K> implements Repositorio<T, K> {
     }
 
     @Override
-    public void remover(K chave) throws IOException, ItemNaoEncontradoException {
+    public synchronized void remover(K chave) throws IOException, ItemNaoEncontradoException {
         
         List<T> itens = listarTodos();
         
@@ -125,6 +132,11 @@ public abstract class ArquivoTexto<T, K> implements Repositorio<T, K> {
             throw naoEncontrado(chave);
         }
         regravar(itens);
+    }
+
+    // Apaga o arquivo (usado ao restaurar um backup, que regrava tudo do zero)
+    public synchronized void limpar() throws IOException {
+        Files.deleteIfExists(caminho);
     }
 
     // ---- Auxiliares ----

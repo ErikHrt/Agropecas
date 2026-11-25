@@ -1,6 +1,10 @@
 package modelo.Produtos;
 
-public class Preco {
+import java.io.Serializable;
+
+public class Preco implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final double valorUnitario;
     private double margemLucro;

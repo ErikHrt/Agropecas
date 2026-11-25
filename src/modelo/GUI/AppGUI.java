@@ -11,7 +11,7 @@ public class AppGUI {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (Exception ignorada) {
-                // segue com o visual padrão do Swing
+                
             }
             new JanelaPrincipal().setVisible(true);
         });

@@ -1,6 +1,10 @@
 package modelo.Produtos;
 
-public class EspecificacaoFisica {
+import java.io.Serializable;
+
+public class EspecificacaoFisica implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     private final double pesoKg;
     private final double alturaMetros;
     private final double larguraMetros;

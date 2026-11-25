@@ -1,6 +1,10 @@
 package modelo;
 
-public class Endereco {
+import java.io.Serializable;
+
+public class Endereco implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     private final String rua;
     private final String numero;
     private final String cidade;

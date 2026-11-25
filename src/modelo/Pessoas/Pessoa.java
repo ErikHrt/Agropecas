@@ -1,9 +1,13 @@
 package modelo.Pessoas;
 
+import java.io.Serializable;
+
 import modelo.Endereco;
 
 // Superclasse Abstrata
-public abstract class Pessoa {
+public abstract class Pessoa implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     protected final String nome;
     protected final String cpf;

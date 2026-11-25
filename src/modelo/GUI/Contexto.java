@@ -1,11 +1,14 @@
 package modelo.GUI;
 
+import modelo.Backup.ServicoBackup;
 import modelo.Repositorio.ArquivoCliente;
 import modelo.Repositorio.ArquivoCompra;
 import modelo.Repositorio.ArquivoFrete;
 import modelo.Repositorio.ArquivoFuncionario;
 import modelo.Repositorio.ArquivoProduto;
 import modelo.Repositorio.ArquivoVenda;
+import java.nio.file.Paths;
+
 import modelo.Servicos.ServicoCompra;
 import modelo.Servicos.ServicoFrete;
 import modelo.Servicos.ServicoVenda;
@@ -23,4 +26,6 @@ final class Contexto {
     final ServicoVenda servicoVenda = new ServicoVenda(produtos, funcionarios, vendas);
     final ServicoCompra servicoCompra = new ServicoCompra(produtos, compras);
     final ServicoFrete servicoFrete = new ServicoFrete(produtos, clientes, funcionarios, fretes);
+    final ServicoBackup servicoBackup = new ServicoBackup(produtos, clientes, funcionarios, vendas, compras, fretes,
+            Paths.get("dados/backup"));
 }

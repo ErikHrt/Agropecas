@@ -1,10 +1,14 @@
 package modelo.Operacoes;
 
+import java.io.Serializable;
+
 /**
  * Item transportado. Guarda o peso e o volume UNITÁRIOS do produto no momento do frete,
  * para o frete continuar com os mesmos números mesmo que o cadastro do produto mude depois.
  */
-public class ItemFrete {
+public class ItemFrete implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final int idProduto;
     private int qtd;

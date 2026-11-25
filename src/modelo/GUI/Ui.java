@@ -49,7 +49,8 @@ final class Ui {
     /** Fração -> porcentagem sem ruído de ponto flutuante (0.07 -> "7.0"). */
     static String pct(double fracao) { return String.valueOf(Math.round(fracao * 10000) / 100.0); }
 
-    static String nomeTipo(String tipo) {
+    static String nomeTipo(String tipo) 
+    {
         switch (tipo) {
             case "PECA": return "Peça";
             case "MAQUINARIO": return "Maquinário";
@@ -62,7 +63,8 @@ final class Ui {
     // Os arquivos usam ';' como separador de campos ("|" e ":" nos itens de compra),
     // então esses caracteres não podem aparecer nos textos digitados.
 
-    static String texto(String txt, String campo) throws ValorInvalidoException {
+    static String texto(String txt, String campo) throws ValorInvalidoException 
+    {
         String t = textoOpcional(txt, campo);
         if (t.isEmpty()) {
             throw new ValorInvalidoException("Preencha o campo \"" + campo + "\".");
@@ -70,7 +72,8 @@ final class Ui {
         return t;
     }
 
-    static String textoOpcional(String txt, String campo) throws ValorInvalidoException {
+    static String textoOpcional(String txt, String campo) throws ValorInvalidoException 
+    {
         String t = txt.trim();
         if (t.contains(";") || t.contains("\n") || t.contains("\r")) {
             throw new ValorInvalidoException("O campo \"" + campo + "\" não pode conter ponto e vírgula nem quebra de linha.");
@@ -78,7 +81,8 @@ final class Ui {
         return t;
     }
 
-    static String textoLocal(String txt) throws ValorInvalidoException {
+    static String textoLocal(String txt) throws ValorInvalidoException 
+    {
         String t = texto(txt, "Local da compra");
         if (t.contains("|") || t.contains(":")) {
             throw new ValorInvalidoException("O local da compra não pode conter \"|\" nem \":\".");
@@ -86,7 +90,8 @@ final class Ui {
         return t;
     }
 
-    static double numero(String txt, String campo) throws ValorInvalidoException {
+    static double numero(String txt, String campo) throws ValorInvalidoException 
+    {
         try {
             double v = Double.parseDouble(txt.trim().replace(',', '.'));
             if (Double.isNaN(v) || Double.isInfinite(v)) {
@@ -108,7 +113,8 @@ final class Ui {
 
     // ---------- Diálogos ----------
 
-    static void erro(Component pai, Exception e) {
+    static void erro(Component pai, Exception e) 
+    {
         String msg = e.getMessage() == null ? e.toString() : e.getMessage();
         if (e instanceof IOException) {
             msg = "Erro de arquivo: " + msg;
@@ -116,32 +122,38 @@ final class Ui {
         erro(pai, msg);
     }
 
-    static void erro(Component pai, String msg) {
+    static void erro(Component pai, String msg) 
+    {
         JOptionPane.showMessageDialog(pai, msg, "Erro", JOptionPane.ERROR_MESSAGE);
     }
 
-    static void aviso(Component pai, String msg) {
+    static void aviso(Component pai, String msg) 
+    {
         JOptionPane.showMessageDialog(pai, msg, "Atenção", JOptionPane.WARNING_MESSAGE);
     }
 
-    static void info(Component pai, String msg) {
+    static void info(Component pai, String msg) 
+    {
         JOptionPane.showMessageDialog(pai, msg, "Agropecas", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    static boolean confirmar(Component pai, String msg) {
+    static boolean confirmar(Component pai, String msg) 
+    {
         return JOptionPane.showConfirmDialog(pai, msg, "Confirmar",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
     }
 
     // ---------- Componentes ----------
 
-    static JButton botao(String texto, ActionListener acao) {
+    static JButton botao(String texto, ActionListener acao) 
+    {
         JButton b = new JButton(texto);
         b.addActionListener(acao);
         return b;
     }
 
-    static JPanel botoes(JButton... botoes) {
+    static JPanel botoes(JButton... botoes) 
+    {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 4));
         for (JButton b : botoes) {
             p.add(b);

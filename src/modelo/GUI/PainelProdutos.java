@@ -26,7 +26,8 @@ final class PainelProdutos extends JPanel implements Atualizavel {
     private final JTextField busca = new JTextField(24);
     private List<Produto> atuais = new ArrayList<>();
 
-    PainelProdutos(Contexto ctx) {
+    PainelProdutos(Contexto ctx) 
+    {
         super(new BorderLayout(8, 8));
         this.ctx = ctx;
         setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -53,6 +54,13 @@ final class PainelProdutos extends JPanel implements Atualizavel {
     @Override
     public void atualizar() {
         try {
+            // Guarda o produto selecionado: a tabela também é recarregada sozinha pelo monitor de estoque
+            Integer idSelecionado = null;
+            int linhaSelecionada = tabela.getSelectedRow();
+            if (linhaSelecionada >= 0) {
+                idSelecionado = atuais.get(tabela.convertRowIndexToModel(linhaSelecionada)).getId();
+            }
+
             List<Produto> lidos = ctx.produtos.listarTodos();
             modelo.setRowCount(0);
             for (Produto p : lidos) {
@@ -70,6 +78,16 @@ final class PainelProdutos extends JPanel implements Atualizavel {
                 });
             }
             atuais = lidos;
+
+            if (idSelecionado != null) {
+                for (int i = 0; i < atuais.size(); i++) {
+                    if (atuais.get(i).getId() == idSelecionado) {
+                        int linhaNaTela = tabela.convertRowIndexToView(i);
+                        tabela.setRowSelectionInterval(linhaNaTela, linhaNaTela);
+                        break;
+                    }
+                }
+            }
         } catch (IOException e) {
             Ui.erro(this, e);
         }

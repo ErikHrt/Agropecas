@@ -1,6 +1,10 @@
 package modelo.Operacoes;
 
-public class ItemOps {
+import java.io.Serializable;
+
+public class ItemOps implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final int idProduto;
     private final double valorUn;

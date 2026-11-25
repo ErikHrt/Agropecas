@@ -11,7 +11,8 @@ import modelo.Pessoas.Funcionario;
 import modelo.Pessoas.Pessoa;
 
 /** Formulário de Cliente ou Funcionário (o CPF é a chave e não pode ser editado depois de salvo). */
-final class FormPessoa extends JPanel {
+final class FormPessoa extends JPanel 
+{
 
     private final boolean funcionario;
 
@@ -78,7 +79,8 @@ final class FormPessoa extends JPanel {
         }
     }
 
-    private Pessoa ler() throws ValorInvalidoException {
+    private Pessoa ler() throws ValorInvalidoException 
+    {
         String c = Ui.texto(cpf.getText(), "CPF");
         String n = Ui.texto(nome.getText(), "Nome");
         String ct = Ui.texto(contato.getText(), "Contato");
@@ -88,17 +90,18 @@ final class FormPessoa extends JPanel {
                 Ui.texto(cidade.getText(), "Cidade"),
                 Ui.texto(estado.getText(), "Estado"));
 
-        if (funcionario) {
-            String cg = Ui.texto(cargo.getText(), "Cargo");
-            double sal = Ui.numero(salarioBase.getText(), "Salário base");
-            double com = Ui.numero(comissao.getText(), "Comissão") / 100.0;
-            double tot = Ui.numero(totalMes.getText(), "Vendas no mês");
-            if (sal < 0 || com < 0 || tot < 0) {
-                throw new ValorInvalidoException("Salário, comissão e vendas não podem ser negativos.");
+        if (funcionario) 
+            {
+                String cg = Ui.texto(cargo.getText(), "Cargo");
+                double sal = Ui.numero(salarioBase.getText(), "Salário base");
+                double com = Ui.numero(comissao.getText(), "Comissão") / 100.0;
+                double tot = Ui.numero(totalMes.getText(), "Vendas no mês");
+                if (sal < 0 || com < 0 || tot < 0) {
+                    throw new ValorInvalidoException("Salário, comissão e vendas não podem ser negativos.");
             }
-            Funcionario f = new Funcionario(n, c, ct, end, cg, sal, com);
-            f.setTotalVendasNoMes(tot);
-            return f;
+                Funcionario f = new Funcionario(n, c, ct, end, cg, sal, com);
+                f.setTotalVendasNoMes(tot);
+                return f;
         }
 
         double saldo = Ui.numero(saldoDevedor.getText(), "Saldo devedor");
@@ -109,7 +112,8 @@ final class FormPessoa extends JPanel {
     }
 
     /** Abre o formulário; devolve um Cliente/Funcionário preenchido ou null se cancelado. */
-    static Pessoa abrir(Component pai, boolean funcionario, String titulo, Pessoa existente) {
+    static Pessoa abrir(Component pai, boolean funcionario, String titulo, Pessoa existente) 
+    {
         FormPessoa form = new FormPessoa(funcionario, existente);
         while (true) {
             int r = JOptionPane.showConfirmDialog(pai, form, titulo,

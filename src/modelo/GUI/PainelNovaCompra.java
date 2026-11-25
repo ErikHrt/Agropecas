@@ -26,6 +26,7 @@ import modelo.Excecoes.ValorInvalidoException;
 import modelo.Operacoes.Compra;
 import modelo.Operacoes.ItemOps;
 import modelo.Pessoas.Funcionario;
+import modelo.Repositorio.ArquivoTexto;
 import modelo.Produtos.Produto;
 
 final class PainelNovaCompra extends JPanel implements Atualizavel {
@@ -234,7 +235,9 @@ final class PainelNovaCompra extends JPanel implements Atualizavel {
                 novos.put(item.getIdProduto(), p);
             }
 
-            ctx.servicoCompra.finalizarCompra(compra, item -> novos.get(item.getIdProduto()));
+            synchronized (ArquivoTexto.TRAVA_GLOBAL) {   // operação em vários arquivos: foto do backup nunca fica pela metade
+                ctx.servicoCompra.finalizarCompra(compra, item -> novos.get(item.getIdProduto()));
+            }
 
             Ui.info(this, "Compra #" + compra.getId() + " registrada.\nTotal: " + Ui.moeda(compra.getValor()));
             compra = null;

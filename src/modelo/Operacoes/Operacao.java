@@ -1,10 +1,14 @@
 package modelo.Operacoes;
 
+import java.io.Serializable;
+
 import java.time.LocalDate;
 import modelo.Pessoas.Funcionario;
 
 // Superclasse Abstrata como base de Venda, Compra ... 
-public abstract class Operacao {
+public abstract class Operacao implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     // Id de qualquer operação será definido apenas quando salvá-la
     private int id;                      

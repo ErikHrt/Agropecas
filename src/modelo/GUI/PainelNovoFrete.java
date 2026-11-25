@@ -31,6 +31,7 @@ import modelo.Operacoes.Veiculo;
 import modelo.Pessoas.Cliente;
 import modelo.Pessoas.Funcionario;
 import modelo.Produtos.Produto;
+import modelo.Repositorio.ArquivoTexto;
 
 final class PainelNovoFrete extends JPanel implements Atualizavel {
 
@@ -281,7 +282,9 @@ final class PainelNovoFrete extends JPanel implements Atualizavel {
             return;
         }
         try {
-            ctx.servicoFrete.finalizarFrete(frete);
+            synchronized (ArquivoTexto.TRAVA_GLOBAL) {   // operação em vários arquivos: foto do backup nunca fica pela metade
+                ctx.servicoFrete.finalizarFrete(frete);
+            }
             Ui.info(this, "Frete #" + frete.getId() + " registrado.\nValor: " + Ui.moeda(frete.getValor()));
             frete = null;
             atualizar();

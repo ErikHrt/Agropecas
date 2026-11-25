@@ -1,7 +1,11 @@
 package modelo.Operacoes;
 
+import java.io.Serializable;
+
 /** Veículo usado no frete: descrição e capacidades máximas de peso e volume. */
-public class Veiculo {
+public class Veiculo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private static final double TOLERANCIA = 1e-9;
 

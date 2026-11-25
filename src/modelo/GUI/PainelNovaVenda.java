@@ -25,6 +25,7 @@ import modelo.Excecoes.ValorInvalidoException;
 import modelo.Operacoes.ItemOps;
 import modelo.Operacoes.Venda;
 import modelo.Pessoas.Cliente;
+import modelo.Repositorio.ArquivoTexto;
 import modelo.Pessoas.Funcionario;
 import modelo.Produtos.Produto;
 
@@ -186,7 +187,9 @@ final class PainelNovaVenda extends JPanel implements Atualizavel {
         }
         venda.setMetodoPagamento((String) pagamento.getSelectedItem());
         try {
-            ctx.servicoVenda.finalizarVenda(venda);
+            synchronized (ArquivoTexto.TRAVA_GLOBAL) {   // operação em vários arquivos: foto do backup nunca fica pela metade
+                ctx.servicoVenda.finalizarVenda(venda);
+            }
             Ui.info(this, "Venda #" + venda.getId() + " registrada.\nTotal: " + Ui.moeda(venda.getValor()));
             venda = null;
             atualizar();
