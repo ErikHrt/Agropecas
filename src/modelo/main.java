@@ -1,6 +1,7 @@
 package modelo;
 
 import java.io.IOException;
+import java.nio.file.Path;
 
 import modelo.Produtos.*;
 import modelo.Repositorio.*;
@@ -8,16 +9,53 @@ import modelo.Excecoes.*;
 import modelo.Pessoas.*;
 import modelo.Operacoes.*;
 import modelo.Servicos.*;
+import modelo.Backup.*;
 
 public class main 
 {
     public static void main(String[] args) 
     {
+        
         String caminhoProdutos = "dados/produtos.txt";
         String caminhoFuncionarios = "dados/pessoas/funcionarios.txt";
         String caminhoClientes = "dados/pessoas/clientes.txt";
         String caminhoVendas = "dados/operacoes/vendas.txt";
         String caminhoCompras = "dados/operacoes/compras.txt";
+        String caminhoFretes = "dados/operacoes/fretes.txt";
+
+        ServicoBackup backup = new ServicoBackup(
+            new ArquivoProduto(caminhoProdutos),
+            new ArquivoCliente(caminhoClientes),
+            new ArquivoFuncionario(caminhoFuncionarios),
+            new ArquivoVenda(caminhoVendas, 
+                new ArquivoCliente(caminhoClientes), 
+                new ArquivoFuncionario(caminhoFuncionarios)),
+            new ArquivoCompra(caminhoCompras, 
+                new ArquivoFuncionario(caminhoFuncionarios)),
+            new ArquivoFrete(caminhoFretes,
+                new ArquivoCliente(caminhoClientes), 
+                new ArquivoFuncionario(caminhoFuncionarios)
+            ),
+            Path.of("backup")
+        );
+
+        ThreadBackup threadBackup = new ThreadBackup( backup , 50 , 
+        new ThreadBackup.Observador(){
+
+            @Override
+            public void aoConcluir(Path arquivo) {
+                System.out.println("Backup concluído: " + arquivo);
+            }
+
+            @Override
+            public void aoFalhar(Exception e) {
+
+                System.err.println("Falha no backup: " + e.getMessage());
+            }
+        });
+
+        threadBackup.start();
+
 
         // =====================
         // 1. TESTE DE PRODUTOS 
@@ -185,7 +223,7 @@ public class main
         ItemOps item1 = new ItemOps(1,10,1000);
         item1.setLocalDaCompra("LOCAL 1");
         
-        ItemOps item2 = new ItemOps(1010, 5, 1000);
+        ItemOps item2 = new ItemOps(10103234, 5, 1000);
         item2.setLocalDaCompra("Local 2");
         
         compra1.adicionarItemNosComprados(item1);
@@ -202,5 +240,7 @@ public class main
             System.err.print("Erro: "+ e.getMessage());
         }
 
+
+        threadBackup.parar();
     }
 }

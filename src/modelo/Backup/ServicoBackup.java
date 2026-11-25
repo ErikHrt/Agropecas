@@ -1,13 +1,8 @@
 package modelo.Backup;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Stream;
 import modelo.Excecoes.CodigoDuplicadoException;
 import modelo.Operacoes.Compra;
 import modelo.Operacoes.Frete;

@@ -1,1 +1,0 @@
-1;CPFdoFuncionario;CPFdoCliente1;2026-11-25;Rua A;100;São Carlos;SP;CAMINHÃO;1000.0;1200.0;1000.0;23.0;234.0;1:2:10.0:343.0

@@ -1,2 +1,0 @@
-CPFdoCliente1;FULANO;Fulano@gmail.com;Rua A;100;São Carlos;SP;1000.0
-123434546;Erik;2323;Tirandentes;1666;Ponta Porã;MS;0.0

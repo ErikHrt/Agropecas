@@ -1,2 +1,0 @@
-1;CPFdoFuncionario;2026-10-19;1:10:1000.0:LOCAL 1|1010:5:1000.0:Local 2
-2;CPFdoFuncionario;2026-11-25;2:6:100000.0:Loja 3

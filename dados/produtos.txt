@@ -1,3 +1,0 @@
-PECA;1;Peça Teste;Descrição da Peça de teste;10.0;0.4;10.0;7.0;7.0;7.0;47
-MAQUINARIO;2;Trator;Descrição Trator;1000000.0;0.5;9999.0;50.0;25.0;25.0;9
-IMPLEMENTO;3;Arado;Descrição do Arado;5000.0;0.7;750.0;2.0;10.0;10.0;1
